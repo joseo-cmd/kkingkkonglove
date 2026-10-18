@@ -10,7 +10,7 @@
 :root{color-scheme:light;--bg:#faf6ff;--bg2:#fff9ee;--card:#fff;--text:#4a4458;--sub:#9a93ab;--me:#9b8ae0;--you:#f3a6c2;--line:#ece6f5;--sh:rgba(120,100,180,.10);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%) fixed;color:var(--text);font-family:"Gowun Dodum",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
-main{max-width:560px;margin:0 auto;padding:16px 16px 40px}
+main{max-width:480px;margin:0 auto;padding:16px 16px 40px}
 .top{display:flex;align-items:center;justify-content:space-between;margin-top:4px;flex-wrap:wrap;gap:6px}
 .hb{display:flex;gap:6px}
 .hb .dbtn{padding:0 10px;font-size:12px}
@@ -172,28 +172,6 @@ textarea:focus{outline:2px solid rgba(155,138,224,.35);border-color:var(--me)}
 .day.sel .chip.ev{color:#4a4458}
 .legend{display:flex;justify-content:center;gap:14px;font-size:11px;color:var(--sub);margin:-8px 0 14px}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
-
-/* ===== v2: 캘린더 간격 제거·확장 / 공휴일 / 오늘 / 폰트 통일 / 수정 아이콘 ===== */
-.grid{margin:0 -12px 16px;border-left:1px solid var(--line)}
-.wdrow{border-bottom:1px solid var(--line)}
-.wdrow,.week{gap:0}
-.week{margin-bottom:0}
-.wd{font-weight:600}
-.wd.sun{color:#e0566d}.wd.sat{color:#5b8def}
-.day{font-family:inherit;border:0;border-radius:0;box-shadow:inset -1px -1px 0 var(--line);padding:5px 0 2px;min-height:72px}
-.day.today{background:#fff7d9}
-.day.sel{background:var(--me)}
-.day.sat .dn{color:#5b8def}
-.day.sun .dn,.day.hol .dn{color:#e0566d}
-.day.sel .dn{color:#fff}
-.day.today .dn{background:#f5c542;color:#4a3b10;font-weight:700}
-.chip{margin:0 1px;padding:0 1px;border-left:0;border-radius:4px;font-family:inherit;font-size:9px;font-weight:600;color:#4a4458}
-.chip.hol{background:#fde0e6;color:#c4405a}
-.day.sel .chip.hol{background:#fde0e6;color:#c4405a}
-.more{margin:0 1px}
-.bar{font-family:inherit;font-size:9px;font-weight:600;padding:0 1px}
-.item.holi{background:#fde8ec;border-color:#f6c3cd}
-.note .task-edit{color:rgba(74,59,42,.5);font-size:14px}
 </style>
 </head>
 <body>
@@ -311,28 +289,6 @@ function dd_(a,b){return Math.round((a-b)/864e5)}
 function addDays(d,n){return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n)}
 function tag(by){var mine=by===me;return '<span class="who" style="background:var(--'+(mine?'me':'you')+')">'+(mine?'나':esc(names[by]||'상대'))+'</span>'}
 var WHO=[['w','낑꿍완댜🤴','#b3a5ea'],['g','낑꿍곤듀👸','#f6b3cb'],['t','낑꿍이들💑','#f5da86']],evWho='t';
-/* 한국 공휴일 (2026~2027). [날짜, 칸에 표시할 짧은 이름, 상세 이름(생략 시 동일)]
-   출처: 한국천문연구원 2027 달력자료(월력요항 기반) / 2026 법정공휴일. 2028년분은 월력요항 발표 후 아래에 추가 */
-var HOL={};
-[['2026-01-01','새해'],
-['2026-02-16','설날연휴'],['2026-02-17','설날'],['2026-02-18','설날연휴'],
-['2026-03-01','삼일절'],['2026-03-02','대체휴일','대체공휴일(삼일절)'],
-['2026-05-05','어린이날'],['2026-05-24','부처님날','부처님오신날'],['2026-05-25','대체휴일','대체공휴일(부처님오신날)'],
-['2026-06-03','지방선거','전국동시지방선거'],['2026-06-06','현충일'],
-['2026-08-15','광복절'],['2026-08-17','대체휴일','대체공휴일(광복절)'],
-['2026-09-24','추석연휴'],['2026-09-25','추석'],['2026-09-26','추석연휴'],
-['2026-10-03','개천절'],['2026-10-05','대체휴일','대체공휴일(개천절)'],['2026-10-09','한글날'],['2026-12-25','성탄절'],
-['2027-01-01','새해'],
-['2027-02-06','설날연휴'],['2027-02-07','설날'],['2027-02-08','설날연휴'],['2027-02-09','대체휴일','대체공휴일(설날)'],
-['2027-03-01','삼일절'],
-['2027-05-01','노동절'],['2027-05-03','대체휴일','대체공휴일(노동절)'],['2027-05-05','어린이날'],['2027-05-13','부처님날','부처님오신날'],
-['2027-06-06','현충일'],
-['2027-07-17','제헌절'],['2027-07-19','대체휴일','대체공휴일(제헌절)'],
-['2027-08-15','광복절'],['2027-08-16','대체휴일','대체공휴일(광복절)'],
-['2027-09-14','추석연휴'],['2027-09-15','추석'],['2027-09-16','추석연휴'],
-['2027-10-03','개천절'],['2027-10-04','대체휴일','대체공휴일(개천절)'],['2027-10-09','한글날'],['2027-10-11','대체휴일','대체공휴일(한글날)'],
-['2027-12-25','성탄절'],['2027-12-27','대체휴일','대체공휴일(성탄절)']
-].forEach(function(h){HOL[h[0]]=[h[1],h[2]||h[1]]});
 function wcol(w){for(var i=0;i<3;i++)if(WHO[i][0]===(w||'t'))return WHO[i][2];return WHO[2][2]}
 function wtag(w){for(var i=0;i<3;i++)if(WHO[i][0]===(w||'t'))return '<span class="who" style="background:'+WHO[i][2]+'">'+WHO[i][1]+'</span>';return ''}
 function evOn(d){return events.filter(function(e){return e.date<=d&&d<=(e.endDate||e.date)})}
@@ -465,7 +421,7 @@ document.addEventListener('pointerup',endDrag);document.addEventListener('pointe
 var CATS=[['do','🎯 하고싶은 것'],['eat','🍽️ 먹고싶은 것']],cat='all';
 function tc(t){return t.cat||'do'}
 function hs(id){var h=0;id=String(id);for(var i=0;i<id.length;i++)h=(h*31+id.charCodeAt(i))|0;return Math.abs(h)}
-function taskHtml(t){var h=hs(t.id);return '<div class="note c'+(h%5)+(t.done?' done':'')+'" data-tid="'+t.id+'" style="--rot:'+((((h>>3)%5)-2)*0.6)+'deg"><div class="nt"><input type="checkbox" data-id="'+t.id+'" '+(t.done?'checked':'')+'><span class="grip">⠿</span></div><div class="ntx">'+esc(t.text)+'</div><div class="nb">'+tag(t.by)+'<span class="task-actions"><button class="task-edit" data-edit="'+t.id+'" aria-label="할 일 수정" title="할 일 수정">✎</button><button class="del" data-del="'+t.id+'" aria-label="할 일 삭제" title="할 일 삭제">×</button></span></div></div>'}
+function taskHtml(t){var h=hs(t.id);return '<div class="note c'+(h%5)+(t.done?' done':'')+'" data-tid="'+t.id+'" style="--rot:'+((((h>>3)%5)-2)*0.6)+'deg"><div class="nt"><input type="checkbox" data-id="'+t.id+'" '+(t.done?'checked':'')+'><span class="grip">⠿</span></div><div class="ntx">'+esc(t.text)+'</div><div class="nb">'+tag(t.by)+'<span class="task-actions"><button class="task-edit" data-edit="'+t.id+'" aria-label="할 일 수정" title="할 일 수정">✏</button><button class="del" data-del="'+t.id+'" aria-label="할 일 삭제" title="할 일 삭제">×</button></span></div></div>'}
 function renderTodo(){
   if(drag)return;
   var ct=[['all','전체']].concat(CATS);
@@ -481,7 +437,7 @@ function renderTodo(){
 }
 function renderCal(){
   $('mt').textContent=cy+'년 '+(cm+1)+'월';
-  var h='<div class="wdrow">'+['일','월','화','수','목','금','토'].map(function(w,i){return '<div class="wd'+(i===0?' sun':i===6?' sat':'')+'">'+w+'</div>'}).join('')+'</div>';
+  var h='<div class="wdrow">'+['일','월','화','수','목','금','토'].map(function(w){return '<div class="wd">'+w+'</div>'}).join('')+'</div>';
   var first=new Date(cy,cm,1).getDay(),st0=new Date(cy,cm,1-first);
   for(var w=0;w<6;w++){
     var ws=addDays(st0,w*7),wsS=ds(ws.getFullYear(),ws.getMonth(),ws.getDate()),we=addDays(ws,6),weS=ds(we.getFullYear(),we.getMonth(),we.getDate());
@@ -492,14 +448,14 @@ function renderCal(){
       for(;;L++){occ[L]=occ[L]||[];var ok=true;for(c=c0;c<=c1;c++)if(occ[L][c])ok=false;if(ok)break}
       for(c=c0;c<=c1;c++)occ[L][c]=true;
       if(L>=3){for(c=c0;c<=c1;c++)hid[c]++;return}
-      var sH=e.date>=wsS,eH=e.endDate<=weS,n=c1-c0+1,li=sH?1:0,ri=eH?1:0;
-      bars+='<span class="bar" style="left:calc(100%/7*'+c0+' + '+li+'px);width:calc(100%/7*'+n+' - '+(li+ri)+'px);top:'+(27+L*14)+'px;background:'+wcol(e.who)+';border-radius:'+(sH?4:0)+'px '+(eH?4:0)+'px '+(eH?4:0)+'px '+(sH?4:0)+'px">'+(sH?'':'◀ ')+esc(e.title)+'</span>';
+      var sH=e.date>=wsS,eH=e.endDate<=weS,n=c1-c0+1,li=sH?3:0,ri=eH?3:0;
+      bars+='<span class="bar" style="left:calc((100% - 18px)/7*'+c0+' + '+(3*c0+li)+'px);width:calc((100% - 18px)/7*'+n+' + '+(3*(n-1)-li-ri)+'px);top:'+(27+L*14)+'px;background:'+wcol(e.who)+';border-radius:'+(sH?6:0)+'px '+(eH?6:0)+'px '+(eH?6:0)+'px '+(sH?6:0)+'px">'+(sH?'':'◀ ')+esc(e.title)+'</span>';
     });
     var cells='';
     for(var c=0;c<7;c++){
       var dt=addDays(ws,c),s=ds(dt.getFullYear(),dt.getMonth(),dt.getDate()),slot=[null,null,null],L;
       for(L=0;L<3;L++)if(occ[L]&&occ[L][c])slot[L]='ph';
-      var q=(HOL[s]?[{t:HOL[s][0],c:'hol'}]:[]).concat(annOn(s).map(function(t){return {t:'💝'+t,c:'ann'}})).concat(events.filter(function(e){return e.date===s&&!(e.endDate&&e.endDate>e.date)}).sort(evSort).map(function(e){return {t:e.title,c:'ev',col:wcol(e.who)}}));
+      var q=annOn(s).map(function(t){return {t:'💝'+t,c:'ann'}}).concat(events.filter(function(e){return e.date===s&&!(e.endDate&&e.endDate>e.date)}).sort(evSort).map(function(e){return {t:e.title,c:'ev',col:wcol(e.who)}}));
       for(L=0;L<3;L++)if(!slot[L]&&q.length)slot[L]=q.shift();
       var over=q.length+hid[c],badge='';
       if(over>0){
@@ -513,18 +469,18 @@ function renderCal(){
         else if(it.more)chips+='<span class="more">+'+it.more+'개 더</span>';
         else chips+='<span class="chip '+it.c+'"'+(it.col?' style="background:'+it.col+';border-color:'+it.col+'"':'')+'>'+esc(it.t)+'</span>';
       }
-      cells+='<button class="day'+(dt.getMonth()!==cm?' off':'')+(s===todayS?' today':'')+(s===sel?' sel':'')+(dt.getDay()===0?' sun':dt.getDay()===6?' sat':'')+(HOL[s]?' hol':'')+'" data-day="'+s+'"><span class="dn">'+dt.getDate()+'</span>'+(memOn(s).length?'<span class="mk">'+esc(memOn(s)[0].mood||'📖')+'</span>':'')+badge+chips+'</button>';
+      cells+='<button class="day'+(dt.getMonth()!==cm?' off':'')+(s===todayS?' today':'')+(s===sel?' sel':'')+'" data-day="'+s+'"><span class="dn">'+dt.getDate()+'</span>'+(memOn(s).length?'<span class="mk">'+esc(memOn(s)[0].mood||'📖')+'</span>':'')+badge+chips+'</button>';
     }
     h+='<div class="week">'+cells+bars+'</div>';
   }
   $('grid').innerHTML=h;
   var p=sel.split('-');
-  $('selLabel').textContent=(+p[1])+'월 '+(+p[2])+'일'+(sel===todayS?' (오늘)':'')+' 일정';
-  $('selAnn').innerHTML=(HOL[sel]?'<div class="item ann holi"><span>🎌</span><span class="t">'+esc(HOL[sel][1])+'</span></div>':'')+annOn(sel).map(function(t){return '<div class="item ann"><span>💝</span><span class="t">'+esc(t)+'</span></div>'}).join('');
+  $('selLabel').textContent=(+p[1])+'월 '+(+p[2])+'일 일정';
+  $('selAnn').innerHTML=annOn(sel).map(function(t){return '<div class="item ann"><span>💝</span><span class="t">'+esc(t)+'</span></div>'}).join('');
   var l=evOn(sel).sort(evSort);
   $('evList').innerHTML=l.length?l.map(function(e){
     return '<div class="item ev"><span class="time">'+evTimeTxt(e)+'</span><div class="t"><div>'+esc(e.title)+'</div>'+(e.endDate&&e.endDate>e.date?'<div class="memo">📆 '+md(e.date)+' ~ '+md(e.endDate)+' ('+(dd_(pd(sel),pd(e.date))+1)+'/'+(dd_(pd(e.endDate),pd(e.date))+1)+'일차)</div>':'')+(e.memo?'<div class="memo">'+esc(e.memo)+'</div>':'')+'</div>'+wtag(e.who)+'<button class="del" data-evedit="'+e.id+'">✎</button><button class="del" data-evdel="'+e.id+'">×</button></div>'
-  }).join(''):(annOn(sel).length||HOL[sel]?'':'<div class="empty">이 날은 일정이 없어요</div>');
+  }).join(''):(annOn(sel).length?'':'<div class="empty">이 날은 일정이 없어요</div>');
   renderMem();
 }
 function renderD(){
