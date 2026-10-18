@@ -545,7 +545,18 @@ function evTimeTxt(e){var st=e.start||e.time||'',en=e.end||'';return st&&en?st+'
 function renderWho(){$('whoPick').innerHTML=WHO.map(function(w){var on=evWho===w[0];return '<button data-who="'+w[0]+'" style="'+(on?'background:'+w[2]+';color:#4a4458;border-color:'+w[2]:'')+'">'+w[1]+'</button>'}).join('')}
 function setEvForm(o){$('evForm').classList.toggle('hide',!o);$('evToggle').textContent=o?'닫기':'＋ 일정 추가';$('evBtn').textContent=editEv?'수정 완료':'추가';$('evCancel').classList.toggle('hide',!editEv);renderWho()}
 function resetEv(){editEv=null;$('evIn').value='';$('evStart').value='';$('evEnd').value='';$('evMemo').value='';$('evEndDate').value='';$('evMsg').textContent='';evWho='t';setEvForm(false)}
-var MOODS=[['🥰','행복'],['😆','웃겼어'],['🥹','감동'],['😋','맛있어'],['😢','슬퍼']];
+var MOODS=[
+  ['🥰','행복'],
+  ['😆','웃겼어'],
+  ['🥹','감동'],
+  ['😋','맛있어'],
+  ['😢','슬퍼'],
+  ['😍','설렘'],
+  ['😡','화남'],
+  ['😴','피곤'],
+  ['🥺','속상'],
+  ['😌','평온']
+];
 function memOn(d){return mems.filter(function(m){return m.date===d}).sort(function(a,b){return (b.at||0)-(a.at||0)})}
 function renderMood(){$('moodPick').innerHTML=MOODS.map(function(m){return '<button data-mood="'+m[0]+'" class="'+(memMood===m[0]?'on':'')+'">'+m[0]+' '+m[1]+'</button>'}).join('')}
 function renderMemWho(){$('memWhoPick').innerHTML=[WHO[0],WHO[1]].map(function(w){var on=memWho===w[0];return '<button data-memwho="'+w[0]+'" style="'+(on?'background:'+w[2]+';color:#4a4458;border-color:'+w[2]:'')+'">'+w[1]+'</button>'}).join('')}
